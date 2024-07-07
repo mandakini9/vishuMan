@@ -2,15 +2,16 @@
 ob_start();
 include_once '../init.php';
 
-$link = "Teacher Management";
-$breadcrumb_item = "Teacher";
-$breadcrumb_item_active = "Manage";
+$link = "Classroom Management";
+$breadcrumb_item = "class";
+$breadcrumb_item_active = "Classroom Manage";
 ?> 
 <div class="row">
     <div class="col-12">
+        <a href="<?= SYS_URL ?>class/classroomadd.php" class="btn btn-dark mb-2"><i class="fas fa-plus-circle"></i> New</a>
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Teacher Details</h3>
+                <h3 class="card-title">Class Room Details</h3>
 
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -28,18 +29,18 @@ $breadcrumb_item_active = "Manage";
             <div class="card-body table-responsive p-0">
                 <?php
                 $db= dbConn();
-                $sql="SELECT * FROM teachers";
+                $sql="SELECT * FROM classroom_allocation a ";
                 $result=$db->query($sql);
                 ?>
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Gender</th>
-                            <th>Mobile No</th>
+                            <th>Class Name </th>
+                            <th>Weekday</th>
+                            <th>ClassRoom Name</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -50,17 +51,14 @@ $breadcrumb_item_active = "Manage";
                             while ($row=$result->fetch_assoc()){
                         ?>
                         <tr>
-                            <td><?= $row['TeacherId'] ?></td>
-                            <td><?= $row['FirstName'] ?></td>
-                            <td><?= $row['LastName'] ?></td>
-                            <td><?= $row['Email'] ?></td>
-                            <td><?= $row['Gender'] ?></td>
-                            <td><?= $row['MobileNo'] ?></td>
-                            <td><a href="<?= SYS_URL ?>users/view.php?userid=<?= $row['UserId'] ?>" class="btn btn-primary" onclick=""><i class="fas fa-eye"></i> View</a></td>
-                            <td><a href="<?= SYS_URL ?>teachers/approve.php?userid=<?= $row['UserId'] ?>" class="btn btn-success"><i class="fas fa-thumbs-up"></i> Approve</a></td>
-                            <td><a href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>" class="btn btn-danger" onclick="return confirmDelete()"><i class="fas fa-times"></i>  Reject</a></td>
-                            
-                        </tr>
+                            <td><?= $row['Id'] ?></td>
+                            <td><?= $row['ClassdetailId'] ?></td>
+                            <td><?= $row['WeekdayId'] ?></td>
+                            <td><?= $row['HallId'] ?></td>
+                            <td><?= $row['StartTime'] ?></td>
+                            <td><?= $row['EndTime'] ?></td>
+                            <td><a href="<?= SYS_URL ?>class/classroomedit.php?roomid=<?= $row['Id'] ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a></td>
+                            <td><a href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>" class="btn btn-danger" onclick="return confirmDelete()"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>
                         
                         <?php 
@@ -78,7 +76,6 @@ $breadcrumb_item_active = "Manage";
 $content = ob_get_clean();
 include '../layouts.php';
 ?>
-
 <script>
     function confirmDelete() {
         return confirm("Are you sure you want to delete this record?");

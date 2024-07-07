@@ -1,11 +1,11 @@
 <?php 
-
 session_start(); 
 if(!isset($_SESSION['USERID'])){
-    header("Location:login.php");
+    header("Location:teacher_login.php");
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +13,7 @@ if(!isset($_SESSION['USERID'])){
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>BIT TEST</title>
+  <title>Teacher Dashboard</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -44,7 +44,7 @@ if(!isset($_SESSION['USERID'])){
     <div class="container d-flex align-items-center justify-content-between">
 
       <div class="logo">
-        <h1 class="text-light"><a href="index.html"><span>BIT</span></a></h1>
+        <h1 class="text-light"><a href="index.html"><span>Vishu</span></a></h1>
         
         <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
       </div>
@@ -69,7 +69,7 @@ if(!isset($_SESSION['USERID'])){
         <div class="d-flex justify-content-between align-items-center">
           <h2>Dashboard</h2>
           <ol>
-            <li><a href="index.html">Customer</a></li>
+            <li><a href="index.html">Teacher</a></li>
             <li>Dashboard</li>
           </ol>
         </div>

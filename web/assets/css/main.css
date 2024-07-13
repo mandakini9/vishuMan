@@ -21,7 +21,7 @@
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #222222; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #3498db; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --accent-color: #17a2b8; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   --contrast-color: #ffffff; /* The contrast color is used for elements when the background color is one of the heading, accent, or default colors. Its purpose is to ensure proper contrast and readability when placed over these more dominant colors */
 }
 
@@ -797,6 +797,8 @@ section,
   height: 100%;
   overflow: hidden;
   z-index: 1;
+  border-radius: 42px;
+  background-color: #ffffff;
 }
 
 .services .service-item:before {
@@ -836,6 +838,8 @@ section,
   width: 56px;
   height: 56px;
   border-radius: 50%;
+  margin-left: 42%;
+  margin-right: 42%;
 }
 
 .services .service-item h4 {

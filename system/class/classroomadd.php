@@ -3,70 +3,40 @@ ob_start();
 include_once '../init.php';
 
 $link = "Classroom Management";
-$breadcrumb_item = "class";
+$breadcrumb_item = "classroom";
 $breadcrumb_item_active = "Add";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $FirstName = dataClean($FirstName);
-    $LastName = dataClean($LastName);
-    $DesignationId = dataClean($DesignationId);
-    $DepartmentId = dataClean($DepartmentId);
-    $AppDate = dataClean($AppDate);
-    $UserName = dataClean($UserName);
     
     $message = array();
-    if (empty($FirstName)) {
-        $message['FirstName'] = "The First Name should not be blank...!";
+    if (empty($classname)) {
+        $message['classname'] = "The Class Name should not be blank...!";
     }
-    if (empty($LastName)) {
-        $message['LastName'] = "The Last Name should not be blank...!";
+    if (empty($classroomname)) {
+        $message['classroomname'] = "The Last Name should not be blank...!";
     }
-    if (empty($DesignationId)) {
-        $message['DesignationId'] = "The Designation should not be blank...!";
+    if (empty($weekday)) {
+        $message['weekday'] = "The Week Day should not be blank...!";
     }
-    if (empty($DepartmentId)) {
-        $message['DepartmentId'] = "The Department should not be blank...!";
+    if (empty($duration)) {
+        $message['duration'] = "The Duration should not be blank...!";
     }
-    if (empty($AppDate)) {
-        $message['AppDate'] = "The App. Date should not be blank...!";
+    if (empty($startTime)) {
+        $message['startTime'] = "The Stat time should not be blank...!";
     }
-    if (empty($UserName)) {
-        $message['UserName'] = "The UserName should not be blank...!";
+    
+    if (empty($allocationtype)) {
+        $message['allocationtype'] = "The Allocation Type should not be blank...!";
     }
-    if (empty($Password)) {
-        $message['Password'] = "The Password should not be blank...!";
-    }
-    if (!empty($UserName)) {
-        $db = dbConn();
-        $sql = "SELECT * FROM users WHERE UserName='$UserName'";
-        $result = $db->query($sql);
-        if ($result->num_rows > 0) {
-            $message['UserName'] = "This User Name already exsist...!";
-        }
-    }
-    if (!empty($Password)) {
-        $uppercase = preg_match('@[A-Z]@', $Password);
-        $lowercase = preg_match('@[a-z]@', $Password);
-        $number = preg_match('@[0-9]@', $Password);
-        $specialChars = preg_match('@[^\w]@', $Password);
-
-        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($Password) < 8) {
-            $message['Password'] = 'Password should be at least 8 characters in length and should include at least one uppercase letter, one lowercase letter, one number, and one special character.';
-        }
-    }
+  
+  
     if (empty($message)) {
-        //Use bcrypt hasing algorithem
-        $pw = password_hash($Password, PASSWORD_DEFAULT);
         $db = dbConn();
-        $sql = "INSERT INTO users(FirstName,LastName,UserName,Password,UserType,Status) VALUES ('$FirstName','$LastName','$UserName','$pw','employee','1')";
+        $sql = "INSERT INTO classroom_allocation(ClassdetailId,HallId,WeekdayId,Duration,StartTime,EndTime,AllocationId) VALUES ('$classname','$classroomname','$weekday','$duration','$startTime','$endTime','$allocationtype')";
         $db->query($sql);
-        $UserId = $db->insert_id;
-
-        $sql = "INSERT INTO employee(AppDate,DesignationId,DepartmentId,UserId) VALUES ('$AppDate','$DesignationId','$DepartmentId','$UserId')";
-        $db->query($sql);
-
-        header("Location:manage.php");
+        
+        header("Location:classroom_manage.php");
     }
 
 
@@ -106,9 +76,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         
 
                         <div class="col-md-4">
+                            <?php
+                            $db = dbConn();
+                            $sql = "SELECT * FROM  halls";
+                            $result = $db->query($sql);
+                            ?>
                             <label for="classroomname">Classroom Name</label>
                             <select name="classroomname" id="classroomname"  class="form-control" aria-label="Large select example">
                                 <option value="" >---</option> 
+                                <?php
+                                while ($row = $result->fetch_assoc()) {
+                                    ?>
+                                    <option value="<?= $row['Id'] ?>"><?= $row['HallName'] ?></option>
+                                    <?php
+                                }
+                                ?> 
                             </select>   
                         </div>
 
@@ -133,20 +115,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
                         <div class="col-md-4">
-                            <label for="duration">Duration</label>
-                            <input type="text" name="duration" class="form-control" id="duration" value="" placeholder="duration" required>
+                            <label for="duration">Duration (Minutes)</label>
+                            <input type="number" name="duration" class="form-control" id="duration" value="" placeholder="3" required>
 
                         </div>
 
                         <div class="col-md-4">
-                            <label for="starttime">Start Time</label>
-                            <input type="time" name="starttime" class="form-control" id="classfee" value="" placeholder="classfee" required>
+                            <label for="start-time">Start Time</label>
+                            <input type="time" name="startTime" class="form-control" id="startTime" value="" placeholder="04.00" required>
 
                         </div>
 
                         <div class="col-md-4">
-                            <label for="endtime">End Time</label>
-                            <input type="time" name="endtime" class="form-control" id="classfee" value="" placeholder="classfee" required>
+                            <label for="end-time">End Time</label>
+                            <input type="time" name="endTime" class="form-control" id="endTime" value="" placeholder="06.00" readonly>
 
                         </div>
 
@@ -195,3 +177,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $content = ob_get_clean();
 include '../layouts.php';
 ?>
+<script>
+        $(document).ready(function() {
+            function calculateEndTime() {
+                var duration = parseFloat($('#duration').val());
+                var startTime = $('#startTime').val();
+                if (!isNaN(duration) && startTime) {
+                    var startTimeParts = startTime.split(':');
+                    var startHours = parseInt(startTimeParts[0]);
+                    var startMinutes = parseInt(startTimeParts[1]);
+                    var startDate = new Date();
+                    startDate.setHours(startHours);
+                    startDate.setMinutes(startMinutes);
+                    var endDate = new Date(startDate.getTime() + (duration/60) * 60 * 60 * 1000);
+                    
+                    var endHours = String(endDate.getHours()).padStart(2, '0');
+                    var endMinutes = String(endDate.getMinutes()).padStart(2, '0');
+                    $('#endTime').val(endHours + ':' + endMinutes);
+                }
+            }
+            $('#duration').on('input', calculateEndTime);
+            $('#startTime').on('input', calculateEndTime);
+        });
+    </script>

@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5">
+        <file>
+            <url>system/class/get_teacher_name.php</url>
+            <bookmark id="5">
+                <name/>
+                <line>17</line>
+                <key/>
+            </bookmark>
+            <bookmark id="1">
+                <name/>
+                <line>23</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/IMS/web/dashboard.php</file>
-            <file>file:/C:/xampp/htdocs/IMS/web/teacher_register.php</file>
-            <file>file:/C:/xampp/htdocs/IMS/web/teacher_login.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/system/class/class_manage.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/web/home.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/system/class/classroom_manage.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/system/class/classedit.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/web/grade10_subjects.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/web/timetable.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/system/users/add.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/system/class/classroomadd.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/system/class/classadd.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/system/users/edit.php</file>
         </group>
     </open-files>
 </project-private>

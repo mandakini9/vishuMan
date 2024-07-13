@@ -5,11 +5,69 @@ include_once '../init.php';
 $link = "Class Hall Management";
 $breadcrumb_item = "class";
 $breadcrumb_item_active = "Hall Manage";
-?> 
+ 
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    extract($_POST);
+    $hallname = dataClean($hallname);
+    $capacity = dataClean($capacity);
+    $db = dbConn();
+    $sql = "INSERT INTO halls(`HallName`,`StudentCapacity`) VALUES ('$hallname','$capacity')";
+    $db->query($sql);
+    
+    header("Location:classhall_manage.php");
+    
+    echo $hallname;
+    echo $hallname;
+}
+
+?>
+
+
+
+
 <div class="row">
-    <div class="col-12">
-        <a href="<?= SYS_URL ?>class/classhalladd.php" class="btn btn-dark mb-2"><i class="fas fa-plus-circle"></i> New</a>
-        <div class="card">
+       <div class="col-5">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Add New Hall</h3>
+            </div>              
+            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                <div class="card-body">
+                    <div class="row">
+                        
+                        <div class="col-md-6">
+                            <label for="hallname">Hall Name</label>
+                            <input type="text" name="hallname" class="form-control" id="hallname" value="<?= @$hallname ?>" placeholder="Hall A" required>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="capacity">Student Capacity </label>
+                            <input type="number" name="capacity" class="form-control" id="capacity" value="<?= @$capacity ?>" placeholder="100" required>
+
+                        </div>
+
+                       
+
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success">Add</button>
+                    <button type="clear" class="btn btn-info">Clear</button>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card -->
+    </div>
+    
+    <div class="col-7">
+
+        <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">Class Hall Details</h3>
 
@@ -50,8 +108,8 @@ $breadcrumb_item_active = "Hall Manage";
                             <td><?= $row['HallName'] ?></td>
                             <td><?= $row['StudentCapacity'] ?></td>
                             
-                            <td><a href="<?= SYS_URL ?>class/classhalledit.php?roomid=<?= $row['Id'] ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a></td>
-                            <td><a href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>" class="btn btn-danger" onclick="return confirmDelete()"><i class="fas fa-trash"></i> Delete</a></td>
+                            <td><a href="<?= SYS_URL ?>class/classhalledit.php?hallid=<?= $row['Id'] ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a></td>
+                            <td><a href="<?= SYS_URL ?>class/delete.php?hallid=<?= $row['Id'] ?>" class="btn btn-danger" onclick="return confirmDelete()"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>
                         
                         <?php 
@@ -64,7 +122,16 @@ $breadcrumb_item_active = "Hall Manage";
         </div>
         <!-- /.card -->
     </div>
+ 
+    
+    
+    
+    
+    
 </div>
+
+
+
 <?php
 $content = ob_get_clean();
 include '../layouts.php';

@@ -4,7 +4,33 @@ include_once '../init.php';
 
 $link = "Class Management";
 $breadcrumb_item = "class";
-$breadcrumb_item_active = "Add";
+$breadcrumb_item_active = "Update";
+
+
+//get class details from db
+        extract($_POST);
+        extract($_GET);
+    
+    $db = dbConn();
+    $sql = "SELECT * FROM classdetails WHERE Id=$classId ";
+
+    $result = $db->query($sql);
+    $row = $result->fetch_assoc();
+    
+    
+    $ayear = $row['AcademicId'];
+    $grade = $row['grade'];
+    $subject = $row['subject'];
+    $classmedium = $row['classmedium'];
+    $classtype = $row['classtype'];
+    $classname = $row['classname'];
+    $teacher = $row['teacher'];
+    $classfees = $row['classfees'];
+    
+ 
+
+
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
@@ -19,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $message = array();
     if (empty($ayear)) {
-        $message['ay54858888ear'] = "The Academic Year should not be blank...!";
+        $message['ayear'] = "The Academic Year should not be blank...!";
     }
     if (empty($grade)) {
         $message['grade'] = "The Grade should not be blank...!";
@@ -46,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($message)) {
     
         $db = dbConn();
-        $sql = "INSERT INTO classdetails(AcademicId,GradeId,SubjectId,MediumId,ClasstypeId,ClassName,TeacherId,Classfee) VALUES ('$ayear','$grade','$subject','$classmedium','$classtype','$classname','$teacher','$classfees')";
+        $sql = "UPDATE  classdetails SET AcademicId='$ayear',GradeId='$grade',SubjectId='$subject',MediumId='$classmedium',ClasstypeId='$classtype',ClassName='$classname',TeacherId='$teacher',Classfee='$classfees'";
         $db->query($sql);
         
         header("Location:class_manage.php");
@@ -61,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Add New Class</h3>
+                <h3 class="card-title">UPdate  Class</h3>
             </div>              
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="card-body">
@@ -79,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                  <?php
                                 while ($row = $result->fetch_assoc()) {
                                     ?>
-                                    <option value="<?= $row['Id'] ?>"><?= $row['Name'] ?></option>
+                                    <option value="<?= $row['Id'] ?>"<?= @$$ayear == $row['Id'] ? 'selected' : '' ?>><?= $row['Name'] ?></option>
                                     <?php
                                 }
                                 ?>
@@ -193,7 +219,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-success">Add</button>
+                     <input type="hidden" name="classId" value="<?= $classId ?>">
+                    <button type="submit" class="btn btn-success">Update</button>
                     <button type="clear" class="btn btn-info">Clear</button>
                 </div>
             </form>

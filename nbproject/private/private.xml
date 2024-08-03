@@ -17,16 +17,18 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/IMS/system/class/class_manage.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/web/header.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/function_1.php</file>
             <file>file:/C:/xampp/htdocs/IMS/web/home.php</file>
-            <file>file:/C:/xampp/htdocs/IMS/system/class/classroom_manage.php</file>
-            <file>file:/C:/xampp/htdocs/IMS/system/class/classedit.php</file>
-            <file>file:/C:/xampp/htdocs/IMS/web/grade10_subjects.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/web/Sdashboard.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/web/student_register.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/mail.php</file>
             <file>file:/C:/xampp/htdocs/IMS/web/timetable.php</file>
             <file>file:/C:/xampp/htdocs/IMS/system/users/add.php</file>
-            <file>file:/C:/xampp/htdocs/IMS/system/class/classroomadd.php</file>
-            <file>file:/C:/xampp/htdocs/IMS/system/class/classadd.php</file>
-            <file>file:/C:/xampp/htdocs/IMS/system/users/edit.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/web/get_timetable.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/config.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/function.php</file>
+            <file>file:/C:/xampp/htdocs/IMS/web/student_class.php</file>
         </group>
     </open-files>
 </project-private>

@@ -29,7 +29,8 @@ $breadcrumb_item_active = "Classroom Manage";
             <div class="card-body table-responsive p-0">
                 <?php
                 $db= dbConn();
-                $sql="SELECT * FROM classroom_allocation a ";
+                $sql="SELECT DISTINCT r.Id,d.ClassName ,w.Name ,h.HallName,r.StartTime ,r.EndTime FROM classroom_allocation r INNER JOIN classdetails d ON 
+                        d.Id=r.ClassdetailId LEFT JOIN weekdays w ON w.Id=r.WeekdayId LEFT JOIN halls h ON h.Id=r.HallId";
                 $result=$db->query($sql);
                 ?>
                 <table class="table table-hover text-nowrap">
@@ -52,9 +53,9 @@ $breadcrumb_item_active = "Classroom Manage";
                         ?>
                         <tr>
                             <td><?= $row['Id'] ?></td>
-                            <td><?= $row['ClassdetailId'] ?></td>
-                            <td><?= $row['WeekdayId'] ?></td>
-                            <td><?= $row['HallId'] ?></td>
+                            <td><?= $row['ClassName'] ?></td>
+                            <td><?= $row['Name'] ?></td>
+                            <td><?= $row['HallName'] ?></td>
                             <td><?= $row['StartTime'] ?></td>
                             <td><?= $row['EndTime'] ?></td>
                             <td><a href="<?= SYS_URL ?>class/classroomedit.php?roomid=<?= $row['Id'] ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a></td>

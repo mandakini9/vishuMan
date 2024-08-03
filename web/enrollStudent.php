@@ -12,7 +12,7 @@ include 'header.php';
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Login</h2>
+        <h2>Student Enroll</h2>
         
       </div><!-- End Section Title -->
           
@@ -22,6 +22,7 @@ include 'header.php';
 
           <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
             <div class="service-item position-relative">
+              <p class="stretched-link">Already Registered Student?</p>
               <i class="bi bi-activity"></i>
               <h4><a href="student_login.php" class="stretched-link">Student Login</a></h4>
               
@@ -30,8 +31,9 @@ include 'header.php';
 
           <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
             <div class="service-item position-relative">
+              <p>New Student?</p>
               <i class="bi bi-bounding-box-circles"></i>
-              <h4><a href="" class="stretched-link">Guardian Login</a></h4>
+              <h4><a href="student_register.php" class="stretched-link">Student Register</a></h4>
               
             </div>
           </div><!-- End Service Item -->

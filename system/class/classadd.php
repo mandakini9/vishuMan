@@ -8,18 +8,13 @@ $breadcrumb_item_active = "Add";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $ayear = dataClean($ayear);
-    $grade = dataClean($grade);
-    $subject = dataClean($subject);
-    $classmedium = dataClean($classmedium);
-    $classtype = dataClean($classtype);
-    $classname = dataClean($classname);
-    $teacher = dataClean($teacher);
+
+    
     $classfees = dataClean($classfees);
     
     $message = array();
     if (empty($ayear)) {
-        $message['ay54858888ear'] = "The Academic Year should not be blank...!";
+        $message['ayear'] = "The Academic Year should not be blank...!";
     }
     if (empty($grade)) {
         $message['grade'] = "The Grade should not be blank...!";
@@ -74,12 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $result = $db->query($sql);
                             ?>
                          <label for="ayear">Academic Year</label>
-                            <select name="ayear" id="ayear" onchange=""  class="form-control" aria-label="Large select example">
+                            <select name="ayear" id="ayear" onchange="loadcName()"  class="form-control" aria-label="Large select example">
                                 <option value="" >--</option>
                                  <?php
                                 while ($row = $result->fetch_assoc()) {
                                     ?>
-                                    <option value="<?= $row['Id'] ?>"><?= $row['Name'] ?></option>
+                                    <option value="<?= $row['Id'] ?>" data-name="<?= $row['Name'] ?>"><?= $row['Name'] ?></option>
                                     <?php
                                 }
                                 ?>
@@ -92,12 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $result = $db->query($sql);
                             ?>
                          <label for="grade">Grade</label>
-                            <select name="grade" id="grade"  onchange="loadTName()" class="form-control" aria-label="Large select example">
+                            <select name="grade" id="grade"  onchange="loadTName(); loadcName();" class="form-control" aria-label="Large select example">
                                 <option value="" >--</option>
                                 <?php
                                 while ($row = $result->fetch_assoc()) {
                                     ?>
-                                    <option value="<?= $row['Id'] ?>" <?= @$grade == $row['Id'] ? 'selected' : '' ?>><?= $row['Name'] ?></option>
+                                    <option value="<?= $row['Id'] ?>" data-name="<?= $row['Name'] ?>" <?= @$grade == $row['Id'] ? 'selected' : '' ?>><?= $row['Name'] ?></option>
                                     <?php
                                 }
                                 ?>
@@ -110,12 +105,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $result = $db->query($sql);
                             ?>
                          <label for="subject">Subject</label>
-                            <select name="subject" id="subject" onchange="loadTName()" class="form-control" aria-label="Large select example">
+                            <select name="subject" id="subject" onchange="loadTName(); loadcName();" class="form-control" aria-label="Large select example">
                                 <option value="" >--</option>
                                 <?php
                                 while ($row = $result->fetch_assoc()) {
                                     ?>
-                                    <option value="<?= $row['Id'] ?>" <?= @$subject == $row['Id'] ? 'selected' : '' ?>><?= $row['Name'] ?></option>
+                                    <option value="<?= $row['Id'] ?>" data-name="<?= $row['Name'] ?>" <?= @$subject == $row['Id'] ? 'selected' : '' ?>><?= $row['Name'] ?></option>
                                     <?php
                                 }
                                 ?>
@@ -128,12 +123,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $result = $db->query($sql);
                             ?>
                          <label for="classmedium">Class Medium</label>
-                            <select name="classmedium" id="classmedium" onchange="loadTName()" class="form-control" aria-label="Large select example">
+                            <select name="classmedium" id="classmedium" onchange="loadTName(); loadcName();" class="form-control" aria-label="Large select example">
                                 <option value="" >--</option>
                                <?php
                                 while ($row = $result->fetch_assoc()) {
                                     ?>
-                                    <option value="<?= $row['Id'] ?>" <?= @$classmedium == $row['Id'] ? 'selected' : '' ?>><?= $row['Name'] ?></option>
+                                    <option value="<?= $row['Id'] ?>" data-name="<?= $row['Name'] ?>" <?= @$classmedium == $row['Id'] ? 'selected' : '' ?>><?= $row['Name'] ?></option>
                                     <?php
                                 }
                                 ?> 
@@ -147,12 +142,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $result = $db->query($sql);
                             ?>
                                     <label for="classtype">Class Type</label>
-                                    <select name="classtype" id="classtype"  onchange="" class="form-control" aria-label="Large select example">
+                                    <select name="classtype" id="classtype"  onchange="loadcName()" class="form-control" aria-label="Large select example">
                                         <option value="" >--</option>
                                        <?php
                                 while ($row = $result->fetch_assoc()) {
                                     ?>
-                                    <option value="<?= $row['Id'] ?>"><?= $row['Name'] ?></option>
+                                    <option value="<?= $row['Id'] ?>" data-name="<?= $row['Name'] ?>"><?= $row['Name'] ?></option>
                                     <?php
                                 }
                                 ?> 
@@ -162,14 +157,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     
                     <div class="col-md-6">
                                     <label for="classname">Class Name</label>
-                                    <input type="text" name="classname" class="form-control" id="classname" value="" placeholder="Class Name" required>
-                                    
+                                      <div id="cname">
+                                    <input type="text" name="classname" class="form-control" id="classname" value="" placeholder="Class Name" readonly>
+                                      </div>
                                 </div>
                     <div class="col-md-6">
                         
                                     <label for="teacher">Teacher Name</label>
                                     <div id="tname">
-                                    <select name="teacher" id="teacher"  class="form-control" aria-label="Large select example">
+                                        <select name="teacher" id="teacher"  class="form-control" aria-label="Large select example" disabled>
                                         <option value="" >---</option>
                                     </select>   
                                 </div>
@@ -238,34 +234,26 @@ include '../layouts.php';
 
 </script>
 
-<!--<script>
-    $(document).ready(function () {
-        loadcName('<?= @$classname ?>');
-    });
+<script>
+    function loadcName() {
+      
+        var academicId = document.getElementById('ayear');
+        var gradeId = document.getElementById('grade');
+        var subjectId = document.getElementById('subject');
+        var mediumId = document.getElementById('classmedium');
+        var classtypeId = document.getElementById('classtype');
 
+        var academicYearName = academicId.options[academicId.selectedIndex].getAttribute('data-name');
+        var gradeName = gradeId.options[gradeId.selectedIndex].getAttribute('data-name');
+        var subjectName = subjectId.options[subjectId.selectedIndex].getAttribute('data-name');
+        var mediumName = mediumId.options[mediumId.selectedIndex].getAttribute('data-name');
+        var classtypeName = classtypeId.options[classtypeId.selectedIndex].getAttribute('data-name');
 
-    function loadcName(cname) {
-        var academicId = $('#ayear').val();
-        var gradeId = $('#grade').val();
-        var subjectId = $('#subject').val();
-        var mediumId = $('#classmedium').val();
-        var classtypeId = $('#classtype').val();
-
-        if (academicId && gradeId && subjectId && mediumId && classtypeId ) {
-
-            $.ajax({
-                url: 'get_class_name.php?academicId=' + academicId + '&gradeId=' + gradeId + '&subjectId='+ subjectId + '&mediumId=' + mediumId + '&classtypeId='+ classtypeId + '&selcname='+cname,
-                type: 'GET',
-                success: function (data) {
-                    $("#cname").html(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error('AJAX Error:', status, error);
-                }
-            });
-        }
-
+        var className = academicYearName + ' '+gradeName + ' ' + subjectName + ' ' + mediumName+ ' ' + classtypeName;
+        
+        document.getElementById('classname').value = className;
+    
 
     }
 
-</script>-->
+</script>

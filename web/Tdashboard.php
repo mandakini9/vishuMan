@@ -1,3 +1,11 @@
+<?php 
+
+session_start(); 
+if(!isset($_SESSION['USERID'])){
+    header("Location:teacher_login.php");
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,53 +38,88 @@
 <script src="assets/js/sweetalert2@11.js" type="text/javascript"></script>
   
 </head>
-
 <body class="index-page">
 
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-      <a href="index.php" class="logo d-flex align-items-center me-auto">
+      <a href="index.html" class="logo d-flex align-items-center me-auto">
         <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="assets/img/logo/vishu.jpg" width="50px"  alt=""/>
+        <!-- <img src="assets/img/logo.png" alt=""> -->
         <h1 class="sitename">Vishu</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="#hero" class="active">Home<br></a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Time Table</a></li>
-          <li><a href="#portfolio">Gallery</a></li>
-          <li><a href="#team">Teachers</a></li>
-          <!--<li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
-            </ul>
-          </li>--->
-          <li><a href="#contact">Contact</a></li>
-        </ul>
+ 
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted scrollto register-btn" href="register.php">Register</a>
-      <a class="btn-getstarted scrollto login-btn" href="login.php">Login</a>
+      <a class="btn-getstarted scrollto register-btn" href="register.php">Welcome, <?= $_SESSION['FIRSTNAME'] ?></a>
+      <a class="btn-getstarted scrollto login-btn" href="logout.php">Logout</a>
       
 
 
     </div>
   </header>
+
+<main class="main">
+          
+    
+    <!-- Teacher Section -->
+    
+    <section id="services" class="services section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Dashboard</h2>
+        
+      </div><!-- End Section Title -->
+          
+      <div class="container">
+   
+        <div class="row justify-content-center gy-4">
+
+          <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item position-relative">
+              <i class="bi bi-activity"></i>
+              <h4><a href="" class="stretched-link">Class</a></h4>
+              
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item position-relative">
+              <i class="bi bi-bounding-box-circles"></i>
+              <h4><a href="" class="stretched-link">Exam</a></h4>
+              
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item position-relative">
+              <i class="bi bi-calendar4-week"></i>
+              <h4><a href="" class="stretched-link">Results</a></h4>
+              
+            </div>
+          </div><!-- End Service Item -->
+
+          
+
+        </div>
+
+      
+   </div>
+    </section><!-- /Services Section -->
+
+   
+
     
 
+    
+
+      
+  </main>
+
+<?php
+include 'footer.php';
+?>

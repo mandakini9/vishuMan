@@ -52,7 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $specialChars = preg_match('@[^\w]@', $Password);
 
         if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($Password) < 8) {
-            $message['Password'] = 'Password should be at least 8 characters in length and should include at least one uppercase letter, one lowercase letter, one number, and one special character.';
+            $message['Password'] = 'Password should be at least 8 characters in length and should '
+                    . 'include at least one uppercase letter, one lowercase letter, one number, and one special character.';
         }
     }
     if (empty($message)) {

@@ -1,174 +1,256 @@
 <?php
+ob_start();
 session_start();
 include 'header.php';
-
+include '../function.php';
+include '../mail.php';
 ?>
+
 <main class="main">
 
     <!-- Contact Section -->
     <section id="contact" class="contact section">
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Student Registration</h2>
-        <!--<p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>-->
-      </div><!-- End Section Title -->
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Student Registration</h2>
 
-      <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+        </div><!-- End Section Title -->
 
-        <div class="row gy-4">
+        <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
 
-           <div class="row justify-content-center">
+            <div class="row gy-4">
 
-          <div class="col-lg-7">
-            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="500">
-              <div class="row gy-4">
+                <div class="row justify-content-center">
 
-                <div class="col-md-6">
-                  <label for="first_name">First Name</label>
-                                <input type="text" name="first_name" class="form-control" id="first_name" value="<?= @$first_name ?>" placeholder="First Name" required>
-                                <span class="text-danger"><?= @$message['first_name'] ?></span>
+                    <div class="col-lg-7">
+                        <div class="col-lg-12 mt-5 mt-lg-0 d-flex align-items-stretch shadow p-3 mb-5 bg-body rounded" data-aos="fade-up" data-aos-delay="200">
+                            <?php
+                            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                                extract($_POST);
+                                $first_name = dataClean($first_name);
+                                $last_name = dataClean($last_name);
+                                $email = dataClean($email);
+
+                                $message = array();
+                                //Required validation-----------------------------------------------
+                                if (empty($first_name)) {
+                                    $message['first_name'] = "The first name should not be blank...!";
+                                }
+                                if (empty($last_name)) {
+                                    $message['last_name'] = "The last name should not be blank...!";
+                                }
+                                if (!isset($gender)) {
+                                    $message['gender'] = "Gender is required";
+                                }
+                                if (empty($user_name)) {
+                                    $message['user_name'] = "User Name is required";
+                                }
+                                if (empty($password)) {
+                                    $message['password'] = "Password is required";
+                                }
+
+                                //Advance validation------------------------------------------------
+                                if (ctype_alpha(str_replace(' ', '', $first_name)) === false) {
+                                    $message['first_name'] = "Only letters and white space allowed";
+                                }
+                                if (ctype_alpha(str_replace(' ', '', $last_name)) === false) {
+                                    $message['last_name'] = "Only letters and white space allowed";
+                                }
+                                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                                    $message['email'] = "Invalid Email Address...!";
+                                } else {
+                                    $db = dbConn();
+                                    $sql = "SELECT * FROM teachers WHERE Email='$email'";
+                                    $result = $db->query($sql);
+
+                                    if ($result->num_rows > 0) {
+                                        $message['email'] = "This Email address already exsist...!";
+                                    }
+                                }
+
+                                if (!empty($user_name)) {
+                                    $db = dbConn();
+                                    $sql = "SELECT * FROM users WHERE UserName='$user_name'";
+                                    $result = $db->query($sql);
+
+                                    if ($result->num_rows > 0) {
+                                        $message['user_name'] = "This User Name already exsist...!";
+                                    }
+                                }
+
+                                if (!empty($password)) {
+                                    if (strlen($password) < 8) {
+                                        $message['password'] = "The password should be 8 characters more";
+                                    }
+                                }
+
+                                if (empty($message)) {
+                                    //Use bcrypt hasing algorithem
+                                    $pw = password_hash($password, PASSWORD_DEFAULT);
+                                    $db = dbConn();
+                                    $sql = "INSERT INTO `users`(`UserName`, `Password`,`UserType`) VALUES ('$user_name','$pw','Students')";
+                                    $db->query($sql);
+
+                                    $user_id = $db->insert_id;
+
+                                    $reg_number = date('Y') . date('m') . date('d') . $user_id;
+                                    $_SESSION['RNO'] = $reg_number;
+                                    $sql = "INSERT INTO students (`FirstName`, `LastName`, `Email`, `Gender`, `GradeId`, `SchoolName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `TelNo`, `MobileNo`, `SRegNo`, `UserId`) "
+                                            . "VALUES ('$first_name','$last_name','$email','$gender','$grade','$schoolname','$addressline1','$addressline2','$addressline3','$telno','$mobile_no','$reg_number','$user_id')";
+                                    $db->query($sql);
+
+                                    $msg = "<h1>SUCCESS</h1>";
+                                    $msg .= "<h2>Congratulations</h2>";
+                                    $msg .= "<p>Your account has been successfully created</p>";
+                                    $msg .= "<a href='http://localhost/IMS/verify.php'>Click here to verifiy your account</a>";
+                                    sendEmail($email, $first_name, "Account Verification", $msg);
+
+                                    header("Location:register_success.php");
+                                }
+                            }
+                            ?>
+
+
+
+                            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" class="php-email-form" novalidate>
+                                <div class="row gy-4">
+
+
+
+                                    <div class="col-md-6">
+                                        <label for="first_name">First Name</label>
+                                        <input type="text" name="first_name" class="form-control" id="first_name" value="<?= @$first_name ?>" placeholder="First Name" required>
+                                        <span class="text-danger"><?= @$message['first_name'] ?></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="last_name">Last Name</label>
+                                        <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last Name" required>
+                                        <span class="text-danger"><?= @$message['first_name'] ?></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="email">Email</label>
+                                        <input type="text" class="form-control" name="email" id="email" placeholder="Email" required>
+                                        <span class="text-danger"><?= @$message['email'] ?></span>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label>Select Gender</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="male"  value="male">
+                                            <label class="form-check-label" for="male">
+                                                Male
+                                            </label>
+
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gender" id="female" value="female" >
+                                            <label class="form-check-label" for="female">
+                                                Female
+                                            </label>
+                                        </div>
+                                        <div class="text-danger mt-4"><?= @$message['gender'] ?></div>
+                                    </div> 
+
+
+
+                                    <div class="col-md-6">
+                                        <?php
+                                        $db = dbConn();
+                                        $sql = "SELECT * FROM  grades";
+                                        $result = $db->query($sql);
+                                        ?>
+                                        <label for="grade">Grade</label>
+                                        <select name="grade" id="grade" class="form-select" aria-label="Large select example">
+                                            <option value="" >--</option>
+                                            <?php
+                                            while ($row = $result->fetch_assoc()) {
+                                                ?>
+                                                <option value="<?= $row['Id'] ?>"><?= $row['Name'] ?></option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="schoolname">School Name</label>
+                                        <input type="text" class="form-control" name="schoolname" id="schoolname" placeholder="school Name" required>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="addressline1">Address line 1</label>
+                                        <input type="text" class="form-control" name="addressline1" id="addressline1" placeholder="No 248" required>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="addressline2">Address Line 2</label>
+                                        <input type="text" class="form-control" name="addressline2" id="addressline2" placeholder="Namal Road" required>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="addressline3">Address Line 3</label>
+                                        <input type="text" class="form-control" name="addressline3" id="addressline3" placeholder="Colombo 10" required>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="telno">Tel. No.(Home)</label>
+                                        <input type="text" class="form-control" name="telno" id="telno" placeholder="Tel. No." required>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="telno">Mobile No.</label>
+                                        <input type="text" class="form-control" name="mobile_no" id="mobile_no" placeholder="Mobile No" required>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="user_name">User Name</label>
+                                        <input type="text" class="form-control" name="user_name" id="user_name" placeholder="Username" required>
+                                        <span class="text-danger"><?= @$message['user_name'] ?></span>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+                                        <span class="text-danger"><?= @$message['password'] ?></span>
+
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <label for="repassword">Retype Password</label>
+                                        <input type="password" class="form-control" name="repassword" id="repassword" placeholder="Retype Password" required>
+
+
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <div class="loading">Loading</div>
+                                        <div class="error-message"></div>
+                                        <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                                        <button type="submit">Submit</button>
+                                    </div>
+                                </div>
+                        </div>
+                        </form>
+                    </div><!-- End Contact Form -->
+
                 </div>
-
-                <div class="col-md-6 ">
-                  <label for="last_name">Last Name</label>
-                                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last Name" required>
-                                <span class="text-danger"><?= @$message['first_name'] ?></span>
-                </div>
-
-                <div class="col-md-6">
-                      <label for="last_name">Date of Birth</label>
-                                <input type="date" class="form-control" name="dob" id="dob" placeholder="Date of Birth" required>
-                                
-                </div>
-                  
-                <div class="col-md-6">
-                      <label for="last_name">NIC</label>
-                                <input type="text" class="form-control" name="nic" id="nic" placeholder="National ID" required>
-                                
-                </div>
-                  
-                  <div class="col-md-6">
-                       
-                   <label>Select Gender</label>
-              
-                   <br><!-- comment -->
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="male"  value="male">
-                                <label class="form-check-label" for="male">
-                                    Male
-                                </label>
-                            </div>
-                 
-                  
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" >
-                                <label class="form-check-label" for="female">
-                                    Female
-                                </label>
-                            </div>
-                            <div class="text-danger mt-4"><?= @$message['gender'] ?></div>
-       
-                  </div>
-                  
-                  <div class="col-md-6">
-                       <label for="email">Email</label>
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Email" required>
-                            <span class="text-danger"><?= @$message['email'] ?></span>
-                      
-                  </div>
-                  
-                   <div class="col-md-6">
-                       <label for="email">School</label>
-                            <input type="text" class="form-control" name="school" id="school" placeholder="School Name" required>
-                           
-            
-                  </div>
-                  <div class="col-md-6">
-                       <label for="address_line1">Address Line 1</label>
-                            <input type="text" class="form-control" name="address_line1" id="address_line1" placeholder="Address Line 1" required>
-            
-                  </div>
-                  <div class="col-md-6">
-                       <label for="address_line2">Address Line 2</label>
-                            <input type="text" class="form-control " name="address_line2" id="address_line2" placeholder="Address Line 2" required>
-                           
-            
-                  </div>
-                  <div class="col-md-6">
-                       <label for="email">City</label>
-                            <input type="text" class="form-control" name="city" id="city" placeholder="City" required>
-                           
-                  </div>
-                   <div class="col-md-6">
-                   
-                       <label for="district">District</label>
-                            <select name="district" id="district"  class="form-select" aria-label="Large select example">
-                                <option value="" >--</option>
-                                
-                            </select>    
-                  </div>
-                  
-                  <div class="col-md-6">
-                       <label for="telno">Tel. No.(Home)</label>
-                            <input type="text" class="form-control" name="telno" id="telno" placeholder="Tel. No." required>
-                           
-                  </div>
-                  
-                  <div class="col-md-6">
-                       <label for="telno">Mobile No.</label>
-                            <input type="text" class="form-control" name="mobile_no" id="mobile_no" placeholder="Mobile No" required>
-                  </div>
-                     
-                  <div class="col-md-6">
-                       <label for="user_name">User Name</label>
-                            <input type="text" class="form-control" name="user_name" id="user_name" placeholder="Username" required>
-                            <span class="text-danger"><?= @$message['user_name'] ?></span>
-                           
-                  </div>
-                  
-                  <div class="col-md-6">
-                       <label for="password">Password</label>
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
-                            <span class="text-danger"><?= @$message['password'] ?></span>
-                           
-                  </div>
-                  
-                  
-                  <div class="col-md-6">
-                       <label for="repassword">Retype Password</label>
-                            <input type="password" class="form-control" name="repassword" id="repassword" placeholder="Retype Password" required>
-                            
-                           
-                  </div>
-                  
-                  
-                  
-                
-                  
-              
-
-                <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                  <button type="submit">Submit</button>
-                </div>
-
-              </div>
-            </form>
-          </div><!-- End Contact Form -->
+            </div>
 
         </div>
-        </div>
-
-      </div>
 
     </section><!-- /Contact Section -->
 
-  </main>
-
-      <?php
+</main>
+<?php
+ob_end_flush();
 include 'footer.php';
 ?>

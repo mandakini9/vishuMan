@@ -588,7 +588,7 @@ section,
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
-.hero {
+/*.hero {
   width: 100%;
   min-height: 70vh;
   position: relative;
@@ -658,7 +658,7 @@ section,
   100% {
     transform: translateY(-10px);
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Clients Section
@@ -856,7 +856,9 @@ section,
 .services .service-item p {
   line-height: 24px;
   font-size: 14px;
-  margin: 10px 0 0 0;
+  margin: -20px 0 23px 0;
+  font-family: var(--heading-font);
+  font-weight: 500;
 }
 
 .services .service-item:hover:before,
@@ -1431,7 +1433,6 @@ section,
 # Contact Section
 --------------------------------------------------------------*/
 .contact {
-  background-image: url("../img/contact-bg.png");
   background-position: left center;
   background-repeat: no-repeat;
   position: relative;
@@ -1712,3 +1713,4 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+

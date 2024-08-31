@@ -17,7 +17,6 @@ function dbConn() {
 }
 
 //End Database Conection-----------------------
-
 //Data Clean------------------------------------------
 function dataClean($data = null) {
     $data = trim($data);
@@ -29,3 +28,33 @@ function dataClean($data = null) {
 
 //End Data Clean
 
+function validateNIC($NIC) {
+    // Determine the length of the NIC
+    $length = strlen($NIC);
+
+    // Check for old NIC format
+    if ($length == 10) {
+        $firstPart = substr($NIC, 0, 9);
+        $lastChar = substr($NIC, -1);
+
+        // Check if the first part is numeric and the last character is 'V' or 'X'
+        if (ctype_digit($firstPart) && ($lastChar == 'V' || $lastChar == 'X')) {
+            return null;
+        } elseif (empty($NIC)) {
+            return "NIC is required";
+        } else {
+            return "Invalid NIC format.";
+        }
+    }
+    // Check for new NIC format
+    elseif ($length == 12) {
+        // Check if all characters are numeric
+        if (ctype_digit($NIC)) {
+            return null;
+        } else {
+            return "Invalid NIC format.";
+        }
+    } else {
+        return "Invalid NIC format.";
+    }
+}

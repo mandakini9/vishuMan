@@ -1,0 +1,24 @@
+
+.left-image{
+    background:url(../../img/log.png) center center / cover no-repeat ;
+    padding-top: 500px;
+    margin-left: -70px;;
+    width: 32rem;
+
+}
+
+body {
+
+    height: 100%;
+    background: linear-gradient(90deg, #aac9f5 50%, #044d91 50%);
+}
+
+.image-background{
+    background-color: #aac9f5;
+    border-radius: 0px 50px 50px 0px;
+}
+
+.card-round{
+    border-radius:50px;
+}
+

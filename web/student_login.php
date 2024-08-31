@@ -39,10 +39,12 @@ include '../function.php';
 
                 if ($result->num_rows == 1) {
                     $row = $result->fetch_assoc();
+                    
 
                     if (password_verify($password, $row['Password'])) {
                         $_SESSION['USERID'] = $row['UserId'];
                         $_SESSION['FIRSTNAME'] = $row['FirstName'];
+                        $_SESSION['STUDENTID'] = $row['Id'];
                         $gradeId = $row['GradeId'];
                         header("Location:Sdashboard.php?gradeId=$gradeId");
                     } else {

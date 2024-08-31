@@ -22,7 +22,7 @@ include 'header.php';
 
           <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
             <div class="service-item position-relative">
-              <i class="bi bi-activity"></i>
+              <i class="bi bi-person-circle"></i>
               <h4><a href="student_login.php" class="stretched-link">Student Login</a></h4>
               
             </div>
@@ -30,8 +30,8 @@ include 'header.php';
 
           <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
             <div class="service-item position-relative">
-              <i class="bi bi-bounding-box-circles"></i>
-              <h4><a href="" class="stretched-link">Guardian Login</a></h4>
+              <i class="bi bi-person-circle"></i>
+              <h4><a href="guardian_login.php" class="stretched-link">Guardian Login</a></h4>
               
             </div>
           </div><!-- End Service Item -->

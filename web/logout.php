@@ -3,4 +3,4 @@ session_start();
 
 session_destroy();
 
-header("Location:teacher_login.php");
+header("Location:student_login.php");

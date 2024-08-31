@@ -27,6 +27,7 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
   <link href="assets/css/mystyle.css" rel="stylesheet">
+  <link href="assets/css/customstyle.css" rel="stylesheet" type="text/css"/>
 <script src="assets/js/sweetalert2@11.js" type="text/javascript"></script>
   
 </head>

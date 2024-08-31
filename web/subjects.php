@@ -29,7 +29,9 @@ include '../function.php';
             while ($row = $result->fetch_assoc()) {
             ?>
             <div class="col-xl-4 col-md-6 d-flex rounded-3" data-aos="fade-up" data-aos-delay="100">
-            <div class="col-md-12 service-item position-relative text-center subjimg">
+                <div class="col-md-12 service-item position-relative text-center" style="background-image: url('assets/img/subjects/<?= $row['Name'] ?>.jpg');
+                     object-fit: cover;
+                     background-repeat: no-repeat;">
                 <!--<img src="" alt=""/>-->
               <!--<i class="bi bi-activity"></i>-->
               <h4><a href="timetable.php?gradeID=<?= $gradeID; ?>&subjectID=<?= $row['subjectID'] ?>" class="stretched-link"><?= $row['Name'] ?></a></h4>

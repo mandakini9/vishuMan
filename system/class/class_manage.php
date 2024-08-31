@@ -13,7 +13,7 @@ $breadcrumb_item_active = "Manage";
             <div class="card-header">
                 <h3 class="card-title">Class Details</h3>
 
-                <div class="card-tools">
+<!--                <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
                         <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
@@ -23,15 +23,14 @@ $breadcrumb_item_active = "Manage";
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
                 <?php
                 $db= dbConn();
-                $sql="SELECT * FROM classdetails c "
-                        . "INNER JOIN teachers t ON t.TeacherId=c.TeacherId "
-                        . "LEFT JOIN academicyears a ON a.Id=c.AcademicId;";
+                $sql="SELECT a.Name, c.Id as Id ,c.ClassName ,t.FirstName,t.LastName,c.Classfee 
+                    FROM classdetails c INNER JOIN  academicyears a ON a.Id=c.AcademicId LEFT JOIN teachers t ON t.TeacherId=c.TeacherId";
                 $result=$db->query($sql);
                 ?>
                 <table class="table table-hover text-nowrap">

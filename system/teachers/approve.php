@@ -1,5 +1,4 @@
 <?php
-
 ob_start();
 include_once '../init.php';
 include_once '../../mail.php';
@@ -26,7 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $msg .= "<p>Dear Teacher, Your account has been approved. You can now log in and start using our services.</p>";
     $msg .= "<a href='http://localhost/IMS/system/teacher_login.php'>Click here to Login your account</a>";
     sendEmail($email, $first_name, "Account Approved", $msg);
-
-    header("Location:manage.php");
-}
+  }
+  $content = ob_get_clean();
+  include '../layouts.php';
 ?>
+  
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Account Approved',
+                text: 'The teacher\'s account has been successfully approved.',
+                confirmButtonText: 'OK'
+            }).then(function() {
+                window.location.href = 'manage.php';
+            });
+        });
+    </script>

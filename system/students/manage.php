@@ -2,50 +2,36 @@
 ob_start();
 include_once '../init.php';
 
-$link = "User Management";
-$breadcrumb_item = "User";
+$link = "Students";
+$breadcrumb_item = "student";
 $breadcrumb_item_active = "Manage";
 ?> 
 <div class="row">
     <div class="col-12">
-        <a href="<?= SYS_URL ?>users/add.php" class="btn btn-dark mb-2"><i class="fas fa-plus-circle"></i> New</a>
+       
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">User Details</h3>
+                <h3 class="card-title">Student Details</h3>
 
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
                 <?php
                 $db= dbConn();
-                $sql="SELECT * FROM users u "
-                        . "INNER JOIN employee e ON e.UserId=u.UserId "
-                        . "LEFT JOIN departments d ON d.Id=e.DepartmentId "
-                        . "LEFT JOIN designations p ON p.Id=e.DesignationId";
+                $sql="SELECT s.Id as Id,s.SRegNo as SRegNo,s.FirstName,s.LastName,s.MobileNo,g.Name as GradeId, g.Id as gId  FROM students s "
+                        . "INNER JOIN grades g ON g.Id=s.GradeId WHERE status = 2";
                 $result=$db->query($sql);
                 ?>
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>SRegNo</th>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>App. Date</th>
-                            <th>Designation</th>
-                            <th>Department</th>
-                            <th></th>
-                            <th></th>
+                            <th>Grade</th>
+                            <th>MobileNo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,13 +40,13 @@ $breadcrumb_item_active = "Manage";
                             while ($row=$result->fetch_assoc()){
                         ?>
                         <tr>
-                            <td><?= $row['UserId'] ?></td>
+                            <td><?= $row['Id'] ?></td>
+                            <td><?= $row['SRegNo'] ?></td>
                             <td><?= $row['FirstName'] ?></td>
                             <td><?= $row['LastName'] ?></td>
-                            <td><?= $row['AppDate'] ?></td>
-                            <td><?= $row['Designation'] ?></td>
-                            <td><?= $row['Department'] ?></td>
-                            <td><a href="<?= SYS_URL ?>users/edit.php?userid=<?= $row['UserId'] ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a></td>
+                            <td><?= $row['GradeId'] ?></td>
+                            <td><?= $row['MobileNo'] ?></td>
+                            <td><a href="<?= SYS_URL ?>students/enrollment/student_class.php?gradeId=<?= $row['gId'] ?>&studentId=<?= $row['Id'] ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Enroll class</a></td>
                             <td><a href="<?= SYS_URL ?>users/delete.php?userid=<?= $row['UserId'] ?>" class="btn btn-danger" onclick="return confirmDelete()"><i class="fas fa-trash"></i> Delete</a></td>
                         </tr>
                         

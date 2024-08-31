@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="card-header">
                 <h3 class="card-title">Class Hall Details</h3>
 
-                <div class="card-tools">
+<!--                <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
                         <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">

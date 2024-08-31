@@ -13,7 +13,7 @@ $breadcrumb_item_active = "Classroom Manage";
             <div class="card-header">
                 <h3 class="card-title">Class Room Details</h3>
 
-                <div class="card-tools">
+<!--                <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
                         <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
@@ -23,7 +23,7 @@ $breadcrumb_item_active = "Classroom Manage";
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">

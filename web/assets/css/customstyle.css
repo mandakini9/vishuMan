@@ -1,0 +1,78 @@
+/*scrollbar*/
+::-webkit-scrollbar {
+  width: 10px; /* width of the scrollbar */
+}
+::-webkit-scrollbar-thumb {
+  background-color: #17a2b8; /* color of the scrollbar handle */
+  border-radius: 5px; /* roundness of the scrollbar handle */
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #117a8b; /* color of the scrollbar handle on hover */
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the scrollbar track */
+}
+::-webkit-scrollbar-track:hover {
+  background: #ddd;
+}
+/*circle button*/
+.circle-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+/*data Table*/
+.data-table-container .row:nth-child(2){
+  overflow-x: auto;
+}
+/*Other*/
+.navbar-nav>.user-menu>.dropdown-menu {
+    width: 160px !important;
+}
+.breadcrumb-item+.breadcrumb-item::before {
+    color: #ebff7c !important;
+}
+.breadcrumb-item.active {
+    color: #ebff7c !important;
+}
+.page-item.active .page-link {
+    background-color: #17a2b8 !important;
+    border-color: #17a2b8!important;
+}
+.print-max-width{
+  max-width: 175px;
+  width: 175px;
+}
+
+.login-page,
+.content-wrapper {
+    background-color: #17a2b842 !important;
+    background: url(../images/background.webp);
+    background-blend-mode: color-burn;
+    background-repeat-x: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+.login-page,
+.card {
+    background-color: #fffffff5 !important;
+}
+.login-box {
+    max-width: 800px !important;
+    width: 100% !important;
+}
+.login-card-overlay{
+    width:100%;
+    bottom:18%;
+    left: -50%;
+    z-index: 99;
+    border-radius: 20px;
+    transform: translate(50%,50%);
+}
+td,th{
+    vertical-align: middle !important;
+}

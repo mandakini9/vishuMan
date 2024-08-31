@@ -2,8 +2,10 @@
 
 session_start(); 
 if(!isset($_SESSION['USERID'])){
-    header("Location:teacher_login.php");
+    header("Location:student_login.php");
 }
+
+extract($_GET);
 
 ?>
 <!DOCTYPE html>
@@ -78,11 +80,35 @@ if(!isset($_SESSION['USERID'])){
       <div class="container">
    
         <div class="row justify-content-center gy-4">
+            
+             <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item position-relative">
+              <i class="bi bi-activity"></i>
+              <h4><a href=" class="stretched-link">Profile</a></h4>
+              
+            </div>
+          </div><!-- End Service Item -->
 
           <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="500">
             <div class="service-item position-relative">
               <i class="bi bi-activity"></i>
-              <h4><a href="" class="stretched-link">Class</a></h4>
+              <h4><a href="student_class.php?gradeId=<?= $gradeId; ?>" class="stretched-link">Class</a></h4>
+              
+            </div>
+          </div><!-- End Service Item -->
+           
+           <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item position-relative">
+              <i class="bi bi-activity"></i>
+              <h4><a href="student_class_payment.php?gradeId=<?= $gradeId; ?>" class="stretched-link">Payment</a></h4>
+              
+            </div>
+          </div><!-- End Service Item -->
+          
+           <div class="col-xl-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item position-relative">
+              <i class="bi bi-activity"></i>
+              <h4><a href="" class="stretched-link">Attendance</a></h4>
               
             </div>
           </div><!-- End Service Item -->
@@ -112,7 +138,31 @@ if(!isset($_SESSION['USERID'])){
     </section><!-- /Services Section -->
 
    
+ <section id="team" class="team section">
 
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Team</h2>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                            
+                        </div>
+                        <div class="member-info">
+                             <h4><a href="student_class.php?gradeId=<?= $gradeId; ?>" class="stretched-link">Class</a></h4>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div></div>
+ </section>
     
 
     

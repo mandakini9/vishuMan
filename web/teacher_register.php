@@ -96,7 +96,10 @@ include '../mail.php';
 
                                     $reg_number = date('Y') . date('m') . date('d') . $user_id;
                                     $_SESSION['RNO'] = $reg_number;
-                                    $sql = "INSERT INTO `teachers`(`FirstName`,`LastName`,`Email`,`Gender`,`TelNo`,`MobileNo`,`TRegNo`,`UserId`) VALUES ('$first_name','$last_name','$email','$gender','$telno','$mobile_no','$reg_number','$user_id')";
+                                   
+                                    $sql = "INSERT INTO `teachers`(`FirstName`, `LastName`, `Email`, `Gender`, `Qualification`, `Experience`, `TelNo`, `MobileNo`, `TRegNo`, `UserId`) "
+                                            . "VALUES ('$first_name','$last_name','$email','$gender','$qualification','$experience','$telno','$mobile_no','$reg_number','$user_id')";
+
                                     $db->query($sql);
 
                                     $teacher_id = $db->insert_id;
@@ -106,8 +109,9 @@ include '../mail.php';
                                         $grades = $_POST['grades'];
 
                                         foreach ($grades as $grade) {
-                                        $sql = "INSERT INTO `teachers_grades`(`TeacherId`,`GradeId`,`SubjectId`,`MediumId`) VALUES ('$teacher_id','$grade','$subject','$medium')";
-                                        $db->query($sql);
+                                            $sql = "INSERT INTO `teachers_grades`(`TeacherId`,`GradeId`,`SubjectId`,`MediumId`)"
+                                                    . " VALUES ('$teacher_id','$grade','$subject','$medium')";
+                                            $db->query($sql);
                                         }
                                     }
                                     $msg = "<h1>SUCCESS</h1>";
@@ -173,37 +177,76 @@ include '../mail.php';
 
 
 
-                                    <div class="col-md-9">
-                                                <?php
-                                                $db = dbConn();
-                                                $sql = "SELECT * FROM  grades";
-                                                $result = $db->query($sql);
-                                                ?>
+                                    <div class="col-md-12">
+                                        <?php
+                                        $db = dbConn();
+                                        $sql = "SELECT * FROM  grades";
+                                        $result = $db->query($sql);
+                                        ?>
                                         <label for="Grades">Grades</label>
                                         <br>
-                                                <?php
-                                                while ($row = $result->fetch_assoc()) {
-                                                    ?>
-                                        <input class="form-check-input" type="checkbox" id="grade" name="grades[]" value="<?= $row['Id'] ?>">&nbsp;&nbsp;<?= $row['Name'] ?>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <?php
+                                        while ($row = $result->fetch_assoc()) {
+                                            ?>
+                                            <input class="form-check-input" type="checkbox" id="grade" name="grades[]" value="<?= $row['Id'] ?>">&nbsp;&nbsp;<?= $row['Name'] ?>&nbsp;&nbsp;&nbsp;&nbsp;
                                             <?php
                                         }
                                         ?>
 
                                     </div>
-
-
-                                    <div class="col-md-3">
-
-                                                <?php
-                                                $db = dbConn();
-                                                $sql = "SELECT * FROM  subjects";
-                                                $result = $db->query($sql);
+                                    <div class="col-md-4">
+                                        <?php
+                                        $db = dbConn();
+                                        $sql = "SELECT * FROM  medium";
+                                        $result = $db->query($sql);
+                                        ?>
+                                        <label for="medium">Medium</label>
+                                        <select name="medium" id="medium"  class="form-select" aria-label="Large select example">
+                                            <option value="" >--</option>
+                                            <?php
+                                            while ($row = $result->fetch_assoc()) {
                                                 ?>
+                                                <option value="<?= $row['Id'] ?>"><?= $row['Name'] ?></option>
+                                                <?php
+                                            }
+                                            ?>
+
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <?php
+                                        $db = dbConn();
+                                        $sql = "SELECT * FROM  subjects";
+                                        $result = $db->query($sql);
+                                        ?>
                                         <label for="subject">Subject</label>
                                         <select name="subject" id="subject"  class="form-select" aria-label="Large select example">
                                             <option value="" >--</option>
+                                            <?php
+                                            while ($row = $result->fetch_assoc()) {
+                                                ?>
+                                                <option value="<?= $row['Id'] ?>"><?= $row['Name'] ?></option>
                                                 <?php
-                                                while ($row = $result->fetch_assoc()) {
+                                            }
+                                            ?>
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <?php
+                                        $db = dbConn();
+                                        $sql = "SELECT * FROM  qualification";
+                                        $result = $db->query($sql);
+                                        ?>
+                                        <label for="subject">Qualification</label>
+                                        <select name="qualification" id="qualification"  class="form-select" aria-label="Large select example">
+                                            <option value="" >--</option>
+                                            <?php
+                                            while ($row = $result->fetch_assoc()) {
                                                 ?>
                                                 <option value="<?= $row['Id'] ?>"><?= $row['Name'] ?></option>
                                                 <?php
@@ -213,26 +256,10 @@ include '../mail.php';
 
                                     </div>
                                     <div class="col-md-6">
-                                                <?php
-                                                $db = dbConn();
-                                                $sql = "SELECT * FROM  medium";
-                                                $result = $db->query($sql);
-                                                ?>
-                                        <label for="medium">Medium</label>
-                                        <select name="medium" id="medium"  class="form-select" aria-label="Large select example">
-                                            <option value="" >--</option>
-                                                <?php
-                                                while ($row = $result->fetch_assoc()) {
-                                                    ?>
-                                                <option value="<?= $row['Id'] ?>"><?= $row['Name'] ?></option>
-                                                <?php
-                                            }
-                                            ?>
+                                        <label for="experience">Experience (years)</label>
+                                        <input type="text" class="form-control" name="experience" id="experience" placeholder="5" required>
 
-                                        </select>
                                     </div>
-
-
 
                                     <div class="col-md-6">
                                         <label for="telno">Tel. No.(Home)</label>
@@ -275,14 +302,14 @@ include '../mail.php';
                                         <button type="submit">Submit</button>
                                     </div>
                                 </div>
-                                </div>
-                            </form>
-                        </div><!-- End Contact Form -->
+                        </div>
+                        </form>
+                    </div><!-- End Contact Form -->
 
-                    </div>
                 </div>
-
             </div>
+
+        </div>
 
     </section><!-- /Contact Section -->
 

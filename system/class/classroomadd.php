@@ -1,5 +1,6 @@
 <?php
 ob_start();
+
 include_once '../init.php';
 
 $link = "Classroom Management";
@@ -29,18 +30,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($allocationtype)) {
         $message['allocationtype'] = "The Allocation Type should not be blank...!";
     }
-  
-  
+    
+//    if (empty($classname && $classroomname && $weekday)) {
+//        $db = dbConn();
+//        $sql = "SELECT * FROM classroom_allocation "
+//                . " WHERE ClassdetailId=$classname AND HallId=$classroomname AND WeekdayId=$weekday'";
+//        $result = $db->query($sql);
+//
+//        if ($result->num_rows > 0) {
+//            $message['allocation'] = "Already allocate";
+//        }
+//    }
     if (empty($message)) {
         $db = dbConn();
-        $sql = "INSERT INTO classroom_allocation(ClassdetailId,HallId,WeekdayId,Duration,StartTime,EndTime,AllocationId) VALUES ('$classname','$classroomname','$weekday','$duration','$startTime','$endTime','$allocationtype')";
-        $db->query($sql);
-        
-        header("Location:classroom_manage.php");
+        echo $sql2 = "SELECT * FROM classroom_allocation "
+                . " WHERE ClassdetailId=$classname AND HallId=$classroomname AND WeekdayId=$weekday";
+        $result2 = $db->query($sql2);
+
+        if ($result2->num_rows > 0) {
+            echo 'thiyenwa';
+            $message['allocation'] = "Already allocate";
+        }
     }
 
 
-    
+//    if (empty($message)) {
+//        $db = dbConn();
+//        $sql = "INSERT INTO classroom_allocation(ClassdetailId,HallId,WeekdayId,Duration,StartTime,EndTime,AllocationId) VALUES ('$classname','$classroomname','$weekday','$duration','$startTime','$endTime','$allocationtype')";
+//        $db->query($sql);
+//        
+////        header("Location:classroom_manage.php");
+//    }
+
+  
 }
 ?>
 <div class="row">
@@ -110,7 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <?php
                                 }
                                 ?> 
-                            </select>   
+                            </select>
+                            <span class="text-danger"><?= @$message['allocation'] ?></span>
                         </div>
 
 
@@ -171,7 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
    
 </div>
-
 
 <?php
 $content = ob_get_clean();
